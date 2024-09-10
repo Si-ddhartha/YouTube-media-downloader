@@ -3,24 +3,23 @@ from pytubefix.exceptions import VideoUnavailable
 
 import sys
 
-OUTPUT_PATH = './Downloaded videos'
-VIDEO_RES = '360p'
+OUTPUT_PATH = './Downloaded audios'
 
 def start_download(video: YouTube):
     print(f'Title: {video.title}')
 
     try:
-        vid = video.streams.filter(res=VIDEO_RES, progressive=True).first()
+        audio = video.streams.get_audio_only()
 
     except Exception as e:
         return e
     
     else:
         print("Starting download...")
-        vid.download(OUTPUT_PATH)
-        print("Video download complete.")
+        audio.download(OUTPUT_PATH, mp3=True)
+        print("Audio download complete.")
 
-def download_video(url: str):
+def download_audio(url: str):
     try:
         video = YouTube(url)
     
@@ -35,7 +34,7 @@ def download_video(url: str):
 def main():
     if len(sys.argv) > 1:
         video_url = sys.argv[1]
-        download_video(video_url)
+        download_audio(video_url)
         
     else:
         print("Please provide a video URL.")
